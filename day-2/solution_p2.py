@@ -8,18 +8,14 @@
 # 4. 747
 
 # check that every item in the list is within a distance of (n <= 3) of eachother.
-def check_list(my_list, direction):
+def check_list(my_list):
     tmp = 0
     for n, i in enumerate(my_list):
         if n == 0:
             tmp = i
             continue
 
-        if direction == "increase":
-            math = i - tmp
-        elif direction == "decrease":
-            math = tmp - i
-
+        math = tmp - i
         if math <= 3 and math > 0:
             tmp = i
             continue
@@ -33,7 +29,8 @@ def try_remove_one(my_list):
     for i in range(len(my_list)):
         new_list = my_list.copy()
         del new_list[i]
-        if check_list(new_list, "increase") or check_list(new_list, "decrease"):
+        # check the list reversed aswell, to cover decreasing lists
+        if check_list(new_list) or check_list(new_list[::-1]):
             return True
         else:
             continue
