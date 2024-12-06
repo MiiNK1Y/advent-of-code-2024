@@ -1,4 +1,4 @@
-class seeker:
+class Seeker:
     def __init__(self, input: str, words: list[str]) -> None:
         self._input = input
         self._words = words
@@ -29,7 +29,7 @@ class seeker:
                     vertical += self._input_lines[k][j]
                 self._count += vertical.count(word)
 
-    def _get_word_from_diagonal(self, word: str, lines: list[str]):
+    def _get_word_from_diagonal(self, word: str, lines: list[str]) -> int:
         count = 0
 
         # the vertical word built from the crimped 2D array
@@ -55,7 +55,7 @@ class seeker:
                     diagonal_deviation = 0
         return count
 
-    def _get_word_from_diagonal_r(self, word: str, lines: list[str]):
+    def _get_word_from_diagonal_r(self, word: str, lines: list[str]) -> int:
         count = 0
 
         # the vertical word built from the crimped 2D array
@@ -101,7 +101,7 @@ with open("input.txt") as f:
     input = f.read()
 f.close()
 
-find = seeker(input, ["XMAS", "SAMX"])
+find = Seeker(input, ["XMAS", "SAMX"])
 
 print(find.get_count())
 
