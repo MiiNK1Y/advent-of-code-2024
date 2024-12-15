@@ -19,6 +19,12 @@ def main() -> None:
     corrected_updates = UpdateFixer(rules, bad_updates)
     fixed_bad_updates = corrected_updates.get_fixed_updates()
 
+    print(bad_updates)
+    print(fixed_bad_updates)
+    print(sum_middle_page_numbers(fixed_bad_updates))
+
 
 if __name__ == "__main__":
     main()
+
+# 4743

@@ -2,7 +2,7 @@
 def read_input() -> list[list]:
     rules = []
     updates = []
-    f = open("stuff/test.txt", "r")
+    f = open("stuff/input.txt", "r")
 
     for line in f:
         line = line.replace("\n", "")
