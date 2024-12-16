@@ -99,7 +99,7 @@ class Map:
 
     def _start_path_finding(self) -> None:
         while (not self._path_complete):
-            # debugger.draw_predicted_path(self._map, self._current_y, self._current_x, self._current_looking_direction)
+            debugger.draw_predicted_path(self._map, self._current_y, self._current_x, self._current_looking_direction)
             self._move()
 
     def get_distinct_position(self) -> int:
@@ -191,7 +191,7 @@ class Map:
                 except IndexError:
                     break
 
-                #debugger.draw_predicted_path(self._map, self._current_y, self._current_x, self._current_looking_direction)
+                debugger.draw_predicted_path(self._map, self._current_y, self._current_x, self._current_looking_direction)
 
     def get_looping_obstrucions(self) -> int:
         return self._looping_obstructions

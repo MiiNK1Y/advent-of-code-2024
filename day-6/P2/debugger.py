@@ -25,5 +25,5 @@ def draw_predicted_path(map, y, x, direction) -> None:
 
     for i in predicted_path:
         print(i)
-    time.sleep(0.05)
+    time.sleep(0.1)
     os.system("clear")
