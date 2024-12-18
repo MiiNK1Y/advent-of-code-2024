@@ -11,7 +11,7 @@ def main():
     print(sum(valid_calibrations))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
 
 # P2
