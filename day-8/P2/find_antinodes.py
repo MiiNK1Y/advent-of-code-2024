@@ -1,12 +1,16 @@
 import time
+import os
+from read_file import read_example
+from collections import OrderedDict
+
 
 class FindAntinodes:
     def __init__(self, map: list[str]) -> None:
         self._map = map
+        self._map_copy = self._map.copy()
         self._antinodes = []
         self._antennas = {}
-
-        self._current_key = ""
+        self._test_example = read_example()
 
         self._set_all_possible_frequencies()
         # print(self._antennas)
@@ -21,18 +25,19 @@ class FindAntinodes:
             length_of_map_x = range(len(self._map[y]))
 
             for x in length_of_map_x:
-                keys = self._antennas.keys()
                 map_item = self._map[y][x]
 
-                if map_item == ".":
+                if map_item == ".":  # or map_item != "A":
                     continue
 
                 item_coordinates = [y, x]
 
-                # setting all the antennas on tha map:
-                if map_item not in keys:
-                    self._antennas[map_item] = [item_coordinates]
+                if item_coordinates not in self._antinodes:
+                    self._antinodes.append(item_coordinates)
 
+                # setting all the antennas on tha map:
+                if map_item not in self._antennas.keys():
+                    self._antennas[map_item] = [item_coordinates]
                 else:
                     self._antennas[map_item].append(item_coordinates)
 
@@ -55,7 +60,10 @@ class FindAntinodes:
 
     def _append_new_antinode_pair(self, antinodes: list[list[int]]) -> None:
         for antinode in antinodes:
-            if (self._is_antinode_inside_bounds(antinode) and antinode not in self._antinodes):
+            if (
+                self._is_antinode_inside_bounds(antinode)
+                and antinode not in self._antinodes
+            ):
                 self._antinodes.append(antinode)
 
     def _deviation(self, xy1, xy2) -> int:
@@ -86,25 +94,50 @@ class FindAntinodes:
         deviation_upward = [antinode_1_y, antinode_1_x]
         deviation_downward = [antinode_2_y, antinode_2_x]
 
-        print("deviation upwards:", deviation_upward)
-        print("deviation downward:", deviation_downward)
-        time.sleep(1)
-
         if self._is_antinode_inside_bounds(deviation_upward):
             if deviation_upward not in self._antinodes:
                 self._antinodes.append(deviation_upward)
-            self._antinode_coordinates_recur(deviation_upward, ant1)
+
+                os.system("clear")
+                print("deviation upwards:", deviation_upward)
+                line_with_char = self._map_copy[antinode_1_y]
+                char_at = (
+                    line_with_char[:antinode_1_x]
+                    + "#"
+                    + line_with_char[antinode_1_x + 1 :]
+                )
+                self._map_copy[antinode_1_y] = char_at
+                for i in self._map_copy:
+                    print(i)
+                time.sleep(0.01)
+
+            self._antinode_coordinates_recur(ant2, deviation_upward)
 
         if self._is_antinode_inside_bounds(deviation_downward):
             if deviation_downward not in self._antinodes:
                 self._antinodes.append(deviation_downward)
-            self._antinode_coordinates_recur(deviation_downward, ant2)
 
+                os.system("clear")
+                print("deviation downward:", deviation_downward)
+                line_with_char = self._map_copy[antinode_2_y]
+                char_at = (
+                    line_with_char[:antinode_2_x]
+                    + "#"
+                    + line_with_char[antinode_2_x + 1 :]
+                )
+                self._map_copy[antinode_2_y] = char_at
+                for i in self._map_copy:
+                    print(i)
+                time.sleep(0.01)
+
+            self._antinode_coordinates_recur(ant2, deviation_downward)
 
     # the legal position of a node is the mirrored location of an adjacent node, making two antinodes.
     def _find_antinodes(self, key: str) -> None:
         for antenna in self._antennas[key]:
             # print()
+            if antenna not in self._antinodes:
+                self._antinodes.append(antenna)
 
             for adjacent_antenna in self._antennas[key]:
                 # print("working with antenna:", antenna)
@@ -125,7 +158,6 @@ class FindAntinodes:
             if len(self._antennas[key]) == 1:
                 continue
 
-            self._current_key = key
             self._find_antinodes(key)
 
     def get_antinodes(self) -> list[list[int]]:
@@ -133,6 +165,3 @@ class FindAntinodes:
 
     def get_antinodes_count(self) -> int:
         return len(self._antinodes)
-
-    def get_all_frequencies(self) -> list[str]:
-        return self._antennas.keys()
